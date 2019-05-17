@@ -5,22 +5,25 @@ const express = require('express');
 const superagent = require('superagent');
 
 // Application Setup
-const app = express();
-const PORT = process.env.PORT || 3000;
+const app = express(); //instantiate an express object alled app
+const PORT = process.env.PORT || 3000; //assign the dotenv port from .env file into PORT. Using OR operator as the fallback to 3000
 
 // Application Middleware
-app.use(express.urlencoded({extended:true}));
-app.use(express.static('public'));
+app.use(express.urlencoded({extended:true})); //urlencoded is based on body-parser, which parses url encoded payloads
+app.use(express.static('public')); //designate a folder for requrests from the client
+app.use(express.static('public/styles')); //serve up css files
 
 // Set the view engine for server-side templating
 app.set('view engine', 'ejs');
 
-app.get('/', newSearch);
-app.post('/searches', performSearch);
+//create routes
+app.get('/', newSearch); //get requests are sent and viewable on the url address line
+app.post('/searches', performSearch); //post requests are embeded and not viewable in the adress line
 
 // Catch-all
 app.get('*', (request, response) => response.status(404).send('This route does not exist'));
 
+//express/node server is listening on specific port
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
 
 function Book(info) {
